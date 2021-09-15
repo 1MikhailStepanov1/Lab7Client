@@ -10,15 +10,14 @@ public class UserManager {
     public static Session authorizeUser(Console console, RequestSender requestSender, AnswerReader answerReader) {
         System.out.println("Enter your name:");
         String name = console.readln();
-        requestSender.sendRequest(new SerializationFromClient("isRegister", null, null, name));
+        requestSender.sendRequest(new SerializationFromClient("isRegister", null, null, name, null));
         try {
             if (answerReader.readValidation()){
-                requestSender.sendRequest(new SerializationFromClient("registerName", null, null, name));
                 int count = 3;
                 while (count != 0){
                     System.out.println("Hello, " + name + "! Enter your password (you have 3 attempts):");
                     String password = console.readln();
-                    requestSender.sendRequest(new SerializationFromClient("authorize", password, null, name));
+                    requestSender.sendRequest(new SerializationFromClient("authorize", null, null, name, password));
                     if (answerReader.readValidation()){
                         System.out.println("Welcome!");
                         return new Session(name, password);
@@ -37,13 +36,12 @@ public class UserManager {
     public static boolean registerUser(Console console, RequestSender requestSender, AnswerReader answerReader) {
         System.out.println("Enter your name:");
         String name = console.readln();
-        requestSender.sendRequest(new SerializationFromClient("isRegister", null, null, name));
+        requestSender.sendRequest(new SerializationFromClient("isRegister", null, null, name, null));
         try {
             if (!answerReader.readValidation()){
-                requestSender.sendRequest(new SerializationFromClient("registerName", null, null, name));
                 System.out.println("Enter your password:");
                 String password = console.readln();
-                requestSender.sendRequest(new SerializationFromClient("registerPassword", password, null, name));
+                requestSender.sendRequest(new SerializationFromClient("registerPassword", null, null, name, password));
                 return answerReader.readValidation();
             } else {
                 System.out.println("User with the same name is already registered. Please, try again.");

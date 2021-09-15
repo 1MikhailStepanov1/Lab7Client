@@ -52,9 +52,9 @@ public class Main {
         Console console = new Console(scanner, answerReader);
         Invoker invoker = new Invoker();
         invoker.initMap(datagramChannel, socketAddress, console, invoker);
-        System.out.println("To work with database you need to register/authorize in the system. Enter one letter of action you will do: a/r.");
+        System.out.println("To work with database you need to register/authorize in the system. Enter one letter of action you will do: r/a.");
         String line = console.readln();
-        while (!line.equals("a") || !line.equals("r")){
+        while (!line.trim().equals("r") && !line.trim().equals("a")){
             System.out.println("Input is incorrect.");
             line = console.readln();
         }
