@@ -45,8 +45,7 @@ public class Main {
             exception.printStackTrace();
             return;
         }
-        Session session = new Session(null, null);
-        session.setAuthorized(false);
+        Session session = null;
         AnswerReader answerReader = new AnswerReader(datagramChannel, socketAddress);
         Scanner scanner = new Scanner(System.in);
         Console console = new Console(scanner, answerReader);
@@ -54,19 +53,21 @@ public class Main {
         invoker.initMap(datagramChannel, socketAddress, console, invoker);
         System.out.println("To work with database you need to register/authorize in the system. Enter one letter of action you will do: r/a.");
         String line = console.readln();
-        while (!line.trim().equals("r") && !line.trim().equals("a")){
-            System.out.println("Input is incorrect.");
-            line = console.readln();
-        }
-        if (line.equals("r")){
-             if (UserManager.registerUser(console, new RequestSender(datagramChannel, socketAddress), answerReader)){
-                 System.out.println("User registered successfully. Please, authorize.");
-                 session = UserManager.authorizeUser(console, new RequestSender(datagramChannel, socketAddress), answerReader);
-                 session.setAuthorized(true);
-             }
-        } else {
-            session = UserManager.authorizeUser(console, new RequestSender(datagramChannel, socketAddress), answerReader);
-            session.setAuthorized(true);
+        while (session == null) {
+            while (!line.trim().equals("r") && !line.trim().equals("a")) {
+                System.out.println("Input is incorrect.");
+                line = console.readln();
+            }
+            if (line.equals("r")) {
+                if (UserManager.registerUser(console, new RequestSender(datagramChannel, socketAddress), answerReader)) {
+                    System.out.println("User registered successfully. Please, authorize.");
+                    session = UserManager.authorizeUser(console, new RequestSender(datagramChannel, socketAddress), answerReader);
+                    session.setAuthorized(true);
+                }
+            } else {
+                session = UserManager.authorizeUser(console, new RequestSender(datagramChannel, socketAddress), answerReader);
+                session.setAuthorized(true);
+            }
         }
         invoker.setSession(session);
         CommandReader commandReader = new CommandReader(console, invoker, answerReader);

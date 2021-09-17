@@ -14,12 +14,13 @@ public class WorkerToUser {
      */
     public void workerToConsole(Worker worker) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.uuuu H:mm:ss z");
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd.MM.uuuu");
         System.out.println();
         System.out.println("Worker");
         System.out.println("Id: " + worker.getId());
         System.out.println("Name: " + worker.getName());
         System.out.println("Coordinates: X-" + worker.getCoordinates().getCoordinateX() + " Y-" + worker.getCoordinates().getCoordinateY());
-        System.out.println("Creation Date: " + worker.getCreationDate().format(formatter));
+        System.out.println("Creation Date: " + worker.getCreationDate().format(formatter1));
         System.out.println("Salary: " + worker.getSalary());
         System.out.println("Start Date: " + worker.getStartDate().format(formatter));
         if (worker.getEndDate() == null){

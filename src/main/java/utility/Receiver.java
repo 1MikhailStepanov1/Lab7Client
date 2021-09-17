@@ -25,7 +25,6 @@ public class Receiver {
     private HashMap<String, CommandInterface> commands;
     private final Invoker invoker;
     private final AnswerReader answerReader;
-    private final Session session;
 
     public Receiver(DatagramChannel datagramChannel, SocketAddress socketAddress, Console console, Invoker invoker) {
         this.datagramChannel = datagramChannel;
@@ -34,7 +33,6 @@ public class Receiver {
         workerFactory.setConsole(console);
         answerReader = console.getAnswerReader();
         this.invoker = invoker;
-        session = invoker.getSession();
     }
 
     public void help(HashMap<String, CommandInterface> commands) {
@@ -44,7 +42,7 @@ public class Receiver {
 
     public void add() {
         try {
-            requestSender.sendRequest(new SerializationFromClient("add", null, workerFactory.getWorkerFromConsole(), session.getUserName(), session.getPassword()));
+            requestSender.sendRequest(new SerializationFromClient("add", null, workerFactory.getWorkerFromConsole(), invoker.getSession().getUserName(), invoker.getSession().getPassword()));
         } catch (NullFieldException | IncorrectValueException e) {
             System.out.println("Worker can't be created. Please, try again.");
         }
@@ -52,39 +50,39 @@ public class Receiver {
 
     public void addIfMax() {
         try {
-            requestSender.sendRequest(new SerializationFromClient("add_if_max", null, workerFactory.getWorkerFromConsole(), session.getUserName(), session.getPassword()));
+            requestSender.sendRequest(new SerializationFromClient("add_if_max", null, workerFactory.getWorkerFromConsole(), invoker.getSession().getUserName(), invoker.getSession().getPassword()));
         } catch (IncorrectValueException | NullFieldException e) {
             System.out.println("Worker can't be created. Please, try again.");
         }
     }
 
     public void clear() {
-        requestSender.sendRequest(new SerializationFromClient("clear", null, null, session.getUserName(), session.getPassword()));
+        requestSender.sendRequest(new SerializationFromClient("clear", null, null, invoker.getSession().getUserName(), invoker.getSession().getPassword()));
     }
 
     public void countLessThanStartDate(String arg) {
-        requestSender.sendRequest(new SerializationFromClient("count_less_than_start_date", arg, null, session.getUserName(), session.getPassword()));
+        requestSender.sendRequest(new SerializationFromClient("count_less_than_start_date", arg, null, invoker.getSession().getUserName(), invoker.getSession().getPassword()));
     }
 
     public void filterGreaterThanStartDate(String arg) {
-        requestSender.sendRequest(new SerializationFromClient("filter_greater_than_start_date", arg, null, session.getUserName(), session.getPassword()));
+        requestSender.sendRequest(new SerializationFromClient("filter_greater_than_start_date", arg, null, invoker.getSession().getUserName(), invoker.getSession().getPassword()));
     }
 
     public void groupCountingByPosition() {
-        requestSender.sendRequest(new SerializationFromClient("group_counting_by_position", null, null, session.getUserName(), session.getPassword()));
+        requestSender.sendRequest(new SerializationFromClient("group_counting_by_position", null, null, invoker.getSession().getUserName(), invoker.getSession().getPassword()));
     }
 
     public void info() {
-        requestSender.sendRequest(new SerializationFromClient("info", null, null, session.getUserName(), session.getPassword()));
+        requestSender.sendRequest(new SerializationFromClient("info", null, null, invoker.getSession().getUserName(), invoker.getSession().getPassword()));
     }
 
     public void removeById(String arg) {
-        requestSender.sendRequest(new SerializationFromClient("remove_by_id", arg, null, session.getUserName(), session.getPassword()));
+        requestSender.sendRequest(new SerializationFromClient("remove_by_id", arg, null, invoker.getSession().getUserName(), invoker.getSession().getPassword()));
     }
 
     public void removeGreater() {
         try {
-            requestSender.sendRequest(new SerializationFromClient("remove_greater", null, workerFactory.getWorkerFromConsole(), session.getUserName(), session.getPassword()));
+            requestSender.sendRequest(new SerializationFromClient("remove_greater", null, workerFactory.getWorkerFromConsole(), invoker.getSession().getUserName(), invoker.getSession().getPassword()));
         } catch (IncorrectValueException | NullFieldException e) {
             System.out.println("Worker can't be created. Please, try again.");
         }
@@ -92,22 +90,22 @@ public class Receiver {
 
     public void removeLower() {
         try {
-            requestSender.sendRequest(new SerializationFromClient("remove_lower", null, workerFactory.getWorkerFromConsole(), session.getUserName(), session.getPassword()));
+            requestSender.sendRequest(new SerializationFromClient("remove_lower", null, workerFactory.getWorkerFromConsole(), invoker.getSession().getUserName(), invoker.getSession().getPassword()));
         } catch (IncorrectValueException | NullFieldException e) {
             System.out.println("Worker can't be created. Please, try again.");
         }
     }
 
     public void show() {
-        requestSender.sendRequest(new SerializationFromClient("show", null, null, session.getUserName(), session.getPassword()));
+        requestSender.sendRequest(new SerializationFromClient("show", null, null, invoker.getSession().getUserName(), invoker.getSession().getPassword()));
     }
 
     public void update(String arg) throws ValidationException {
-        requestSender.sendRequest(new SerializationFromClient("validate_id", arg, null, session.getUserName(), session.getPassword()));
+        requestSender.sendRequest(new SerializationFromClient("validate_id", arg, null, invoker.getSession().getUserName(), invoker.getSession().getPassword()));
         try {
             if (answerReader.readValidation()) {
                 try {
-                    requestSender.sendRequest(new SerializationFromClient("update", arg, workerFactory.getWorkerFromConsole(), session.getUserName(), session.getPassword()));
+                    requestSender.sendRequest(new SerializationFromClient("update", arg, workerFactory.getWorkerFromConsole(), invoker.getSession().getUserName(), invoker.getSession().getPassword()));
                 } catch (IncorrectValueException | NullFieldException e) {
                     System.out.println("Worker can't be created. Please, try again.");
                 }
@@ -177,7 +175,7 @@ public class Receiver {
                                 answerReader.setAnswerAccepted(true);
                                 continue;
                             }
-                            requestSender.sendRequest(new SerializationFromClient(command, arg, tempWorker, session.getUserName(), session.getPassword()));
+                            requestSender.sendRequest(new SerializationFromClient(command, arg, tempWorker, invoker.getSession().getUserName(), invoker.getSession().getPassword()));
                         } else {
                             try {
                                 invoker.exe(command, arg);

@@ -45,7 +45,7 @@ public class FieldCheckerForConsole {
     public String readAndCheckName() {
         FieldCheckerHelp<String> tempInterface = str -> {
             if (str == null || str.equals("")) {
-                throw new NullFieldException("name");
+                throw new NullFieldException("Name");
             }
             return str;
         };
@@ -60,7 +60,7 @@ public class FieldCheckerForConsole {
                 if (result > 768) {
                     throw new IncorrectValueException("coordinate X", "(Reminder: Coordinate X can't be more than 768.)");
                 }
-            }else throw new NullFieldException("coordinate X");
+            }else throw new NullFieldException("Coordinate X");
             return result;
         };
         return readAndCheckField("coordinate X", "(Reminder: Coordinate X can't be more than 768.)", tempInterface);
@@ -71,7 +71,7 @@ public class FieldCheckerForConsole {
             Integer result = null;
             if (str != null) {
                 result = Integer.parseInt(str);
-            } else throw new NullFieldException("coordinate Y");
+            } else throw new NullFieldException("Coordinate Y");
             return result;
         };
         return readAndCheckField("coordinate Y", "", tempInterface);
@@ -86,7 +86,7 @@ public class FieldCheckerForConsole {
                     throw new IncorrectValueException("salary", "(Reminder: Salary should be more than 0.)");
                 }
             }else {
-                throw new NullFieldException("salary");
+                throw new NullFieldException("Salary");
             }
             return result;
         };
@@ -99,7 +99,7 @@ public class FieldCheckerForConsole {
             if (str != null) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.uuuu H:mm:ss z");
                 result = ZonedDateTime.parse(str, formatter);
-            } else throw new NullFieldException("start date");
+            } else throw new NullFieldException("Start date");
             return result;
         };
         return readAndCheckField("start date", "", tempInterface);

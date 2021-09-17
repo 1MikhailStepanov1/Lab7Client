@@ -95,7 +95,7 @@ public class AnswerReader {
                     return true;
                 } else {
                     ((Buffer)byteBuffer).clear();
-                    System.out.println("Validation wasn't passed.");
+                    System.out.println("Validation wasn't passed. " + answerChanged.getMessage());
                     setValidationAccepted(true);
                     return false;
                 }

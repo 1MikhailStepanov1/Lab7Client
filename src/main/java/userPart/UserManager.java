@@ -14,14 +14,14 @@ public class UserManager {
         try {
             if (answerReader.readValidation()){
                 int count = 3;
+                System.out.println("Hello, " + name + "! Enter your password (you have 3 attempts):");
                 while (count != 0){
-                    System.out.println("Hello, " + name + "! Enter your password (you have 3 attempts):");
                     String password = console.readln();
                     requestSender.sendRequest(new SerializationFromClient("authorize", null, null, name, password));
                     if (answerReader.readValidation()){
                         System.out.println("Welcome!");
                         return new Session(name, password);
-                    } else System.out.println("Hmm... May be you will try again? You have " + count + " more attempts.");
+                    } else System.out.println("Hmm... May be you will try again? You have " + (count-1) + " more attempts.");
                     count--;
                 }
                 System.out.println("Sorry, you haven't enter correct password 3 times. Program will be closed.");
@@ -41,7 +41,7 @@ public class UserManager {
             if (!answerReader.readValidation()){
                 System.out.println("Enter your password:");
                 String password = console.readln();
-                requestSender.sendRequest(new SerializationFromClient("registerPassword", null, null, name, password));
+                requestSender.sendRequest(new SerializationFromClient("register", null,null, name, password));
                 return answerReader.readValidation();
             } else {
                 System.out.println("User with the same name is already registered. Please, try again.");
