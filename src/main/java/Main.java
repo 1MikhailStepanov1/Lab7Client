@@ -62,11 +62,15 @@ public class Main {
                 if (UserManager.registerUser(console, new RequestSender(datagramChannel, socketAddress), answerReader)) {
                     System.out.println("User registered successfully. Please, authorize.");
                     session = UserManager.authorizeUser(console, new RequestSender(datagramChannel, socketAddress), answerReader);
-                    session.setAuthorized(true);
+                    if (session != null) {
+                        session.setAuthorized(true);
+                    } else System.out.println("Session wasn't created. Please, fix problems and try again.");
                 }
             } else {
                 session = UserManager.authorizeUser(console, new RequestSender(datagramChannel, socketAddress), answerReader);
-                session.setAuthorized(true);
+                if (session != null) {
+                    session.setAuthorized(true);
+                } else System.out.println("Session wasn't created. Please, fix problems and try again.");
             }
         }
         invoker.setSession(session);
